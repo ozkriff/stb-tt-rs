@@ -142,14 +142,13 @@ pub struct Font {
 }
 
 impl Font {
-    pub fn new(font_path: &str, height: f32) -> Font {
+    pub fn new(font_path: &Path, height: f32) -> Font {
         let data = {
             use std::io::{BufferedReader, File};
-            let path = Path::new(font_path);
-            if !path.exists() {
-                fail!("Wrong font path: {}", font_path);
+            if !font_path.exists() {
+                fail!("Wrong font path: {}", font_path.display());
             }
-            let file = File::open(&path);
+            let file = File::open(font_path);
             let mut reader = BufferedReader::new(file);
             reader.read_to_end().unwrap().as_slice().to_owned()
         };
