@@ -181,8 +181,8 @@ impl Font {
         }
     }
     
-    pub fn get_glyph(&self, glyph_index: i32) -> (~[c_uchar], i32, i32, i32, i32) {
-        use std::slice::from_buf;
+    pub fn get_glyph(&self, glyph_index: i32) -> (Vec<c_uchar>, i32, i32, i32, i32) {
+        use std::vec::raw::from_buf;
         let mut w = 0;
         let mut h = 0;
         let mut xoff = 0;

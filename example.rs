@@ -12,7 +12,7 @@ fn print_char(font: &stb_tt::Font, c: char) {
     let (bitmap, w, h, _, _) = font.get_glyph(glyph_index);
     for j in range(0, h) {
         for i in range(0, w) {
-            print!("{}", byte_to_char(bitmap[(j * w + i) as uint]));
+            print!("{}", byte_to_char(*bitmap.get((j * w + i) as uint)));
         }
         print!("\n");
     }
