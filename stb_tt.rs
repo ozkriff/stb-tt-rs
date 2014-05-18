@@ -133,7 +133,7 @@ pub mod ffi {
 
 pub struct Font {
     font_info: ffi::FontInfo,
-    data: ~[c_uchar],
+    data: Vec<c_uchar>,
     height: f32,
     scale: f32,
     ascent: i32,
@@ -150,12 +150,12 @@ impl Font {
             }
             let file = File::open(font_path);
             let mut reader = BufferedReader::new(file);
-            reader.read_to_end().unwrap().as_slice().to_owned()
+            reader.read_to_end().unwrap()
         };
         let mut font_info = ffi::FontInfo::new();
         unsafe {
-            let font_offset = ffi::stbtt_GetFontOffsetForIndex(&data[0] as *u8, 0);
-            ffi::stbtt_InitFont(&mut font_info, &data[0] as *u8, font_offset);
+            let font_offset = ffi::stbtt_GetFontOffsetForIndex(data.get(0) as *u8, 0);
+            ffi::stbtt_InitFont(&mut font_info, data.get(0) as *u8, font_offset);
         }
         let scale = unsafe {
             ffi::stbtt_ScaleForPixelHeight(&font_info, height)
