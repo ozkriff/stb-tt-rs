@@ -7,10 +7,10 @@ pub mod ffi {
     use std::ptr;
 
     pub struct FontInfo {
-       userdata: *c_void,
+       userdata: *const c_void,
 
        // pointer to .ttf file
-       data: *c_uchar,
+       data: *const c_uchar,
 
        // offset of start of font
        fontstart: c_int,
@@ -55,38 +55,38 @@ pub mod ffi {
     #[link(name = "stb_truetype")]
     extern {
         pub fn stbtt_GetFontOffsetForIndex(
-            data: *c_uchar,
+            data: *const c_uchar,
             index: c_int,
         ) -> c_int;
 
 
         pub fn stbtt_InitFont(
             info: *mut FontInfo,
-            data2: *c_uchar,
+            data2: *const c_uchar,
             fontstart: c_int,
         );
 
         pub fn stbtt_GetFontVMetrics(
-            info: *FontInfo,
+            info: *const FontInfo,
             ascent: *mut c_int,
             descent: *mut c_int,
             lineGap: *mut c_int,
         );
 
         pub fn stbtt_FindGlyphIndex(
-            info: *FontInfo,
+            info: *const FontInfo,
             unicode_codepoint: c_int,
         ) -> c_int;
 
         pub fn stbtt_GetGlyphHMetrics(
-            info: *FontInfo,
+            info: *const FontInfo,
             glyph_index: c_int,
             advanceWidth: *mut c_int,
             eftSideBearing: *mut c_int,
         );
 
         pub fn stbtt_GetGlyphBitmapBox(
-            font: *FontInfo,
+            font: *const FontInfo,
             glyph: c_int,
             scale_x: c_float,
             scale_y: c_float,
@@ -97,14 +97,14 @@ pub mod ffi {
         );
 
         pub fn stbtt_GetGlyphKernAdvance(
-            info: *FontInfo,
+            info: *const FontInfo,
             glyph1: c_int,
             glyph2: c_int,
         );
 
         pub fn stbtt_MakeGlyphBitmap(
-            info: *FontInfo,
-            output: *c_uchar,
+            info: *const FontInfo,
+            output: *const c_uchar,
             out_w: c_int,
             out_h: c_int,
             out_stride: c_int,
@@ -114,12 +114,12 @@ pub mod ffi {
         );
 
         pub fn stbtt_ScaleForPixelHeight(
-            info: *FontInfo,
+            info: *const FontInfo,
             height: c_float,
         ) -> c_float;
 
         pub fn stbtt_GetGlyphBitmap(
-            info: *FontInfo,
+            info: *const FontInfo,
             scale_x: c_float,
             scale_y: c_float,
             glyph: c_int,
@@ -127,7 +127,7 @@ pub mod ffi {
             height: *mut c_int,
             xoff: *mut c_int,
             yoff: *mut c_int,
-        ) -> *c_uchar;
+        ) -> *const c_uchar;
     }
 }
 
@@ -154,8 +154,8 @@ impl Font {
         };
         let mut font_info = ffi::FontInfo::new();
         unsafe {
-            let font_offset = ffi::stbtt_GetFontOffsetForIndex(data.get(0) as *u8, 0);
-            ffi::stbtt_InitFont(&mut font_info, data.get(0) as *u8, font_offset);
+            let font_offset = ffi::stbtt_GetFontOffsetForIndex(data.get(0) as *const u8, 0);
+            ffi::stbtt_InitFont(&mut font_info, data.get(0) as *const u8, font_offset);
         }
         let scale = unsafe {
             ffi::stbtt_ScaleForPixelHeight(&font_info, height)
