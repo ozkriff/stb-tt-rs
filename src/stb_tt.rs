@@ -2,6 +2,9 @@ extern crate libc;
 
 use libc::{c_int, c_uchar};
 
+#[link(name = "stb_truetype")]
+extern { }
+
 pub mod ffi {
     use libc::{c_int, c_uchar, c_float, c_void};
     use std::ptr;
@@ -52,7 +55,6 @@ pub mod ffi {
         }
     }
 
-    #[link(name = "stb_truetype")]
     extern {
         pub fn stbtt_GetFontOffsetForIndex(
             data: *const c_uchar,
