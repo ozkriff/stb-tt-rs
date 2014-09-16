@@ -1,6 +1,7 @@
 extern crate libc;
 
 use libc::{c_int, c_uchar};
+use std::io::fs::PathExtensions;
 
 #[link(name = "stb_truetype")]
 extern { }
