@@ -157,8 +157,8 @@ impl Font {
         };
         let mut font_info = ffi::FontInfo::new();
         unsafe {
-            let font_offset = ffi::stbtt_GetFontOffsetForIndex(data.get(0) as *const u8, 0);
-            ffi::stbtt_InitFont(&mut font_info, data.get(0) as *const u8, font_offset);
+            let font_offset = ffi::stbtt_GetFontOffsetForIndex(&data[0] as *const u8, 0);
+            ffi::stbtt_InitFont(&mut font_info, &data[0] as *const u8, font_offset);
         }
         let scale = unsafe {
             ffi::stbtt_ScaleForPixelHeight(&font_info, height)

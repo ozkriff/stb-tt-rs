@@ -5,6 +5,6 @@ version = "0.0.1"
 authors = ["ozkriff"]
 build = "./build.sh"
 
-[[lib]]
+[lib]
 
 name = "stb_tt"
