@@ -149,7 +149,7 @@ impl Font {
         let data = {
             use std::io::{BufferedReader, File};
             if !font_path.exists() {
-                fail!("Wrong font path: {}", font_path.display());
+                panic!("Wrong font path: {}", font_path.display());
             }
             let file = File::open(font_path);
             let mut reader = BufferedReader::new(file);
