@@ -1,7 +1,15 @@
+// TODO: remove some warnings
+#![allow(unstable)]
+#![allow(dead_code)]
+#![allow(missing_copy_implementations)]
+#![allow(non_snake_case)]
+#![allow(improper_ctypes)]
+
 extern crate libc;
 
 use libc::{c_int, c_uchar};
 use std::io::fs::PathExtensions;
+use std::io::{Reader, File};
 
 #[link(name = "stb_truetype")]
 extern { }
@@ -146,15 +154,14 @@ pub struct Font {
 
 impl Font {
     pub fn new(font_path: &Path, height: f32) -> Font {
-        let data = {
-            use std::io::{BufferedReader, File};
-            if !font_path.exists() {
-                panic!("Wrong font path: {}", font_path.display());
-            }
-            let file = File::open(font_path);
-            let mut reader = BufferedReader::new(file);
-            reader.read_to_end().unwrap()
-        };
+        if !font_path.exists() {
+            panic!("Wrong font path: {}", font_path.display());
+        }
+        Font::from_reader(&mut File::open(font_path), height)
+    }
+
+    pub fn from_reader(reader: &mut Reader, height: f32) -> Font {
+        let data = reader.read_to_end().unwrap();
         let mut font_info = ffi::FontInfo::new();
         unsafe {
             let font_offset = ffi::stbtt_GetFontOffsetForIndex(&data[0] as *const u8, 0);
@@ -183,9 +190,8 @@ impl Font {
             line_gap: line_gap,
         }
     }
-    
+
     pub fn get_glyph(&self, glyph_index: i32) -> (Vec<c_uchar>, i32, i32, i32, i32) {
-        use std::vec::raw::from_buf;
         let mut w = 0;
         let mut h = 0;
         let mut xoff = 0;
@@ -203,7 +209,7 @@ impl Font {
                 &mut xoff,
                 &mut yoff,
             );
-            from_buf(buf, (w * h) as uint)
+            Vec::from_raw_buf(buf, (w * h) as usize)
         };
         (bitmap, w as i32, h as i32, xoff as i32, yoff as i32)
     }

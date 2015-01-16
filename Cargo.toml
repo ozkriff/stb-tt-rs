@@ -3,8 +3,11 @@
 name = "stb_tt"
 version = "0.0.1"
 authors = ["ozkriff"]
-build = "./build.sh"
+build = "./build.rs"
 
 [lib]
 
 name = "stb_tt"
+
+[build-dependencies.gcc]
+git = "https://github.com/alexcrichton/gcc-rs"

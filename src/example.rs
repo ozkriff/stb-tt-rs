@@ -1,8 +1,10 @@
+#![allow(unstable)]
+
 extern crate stb_tt;
 
-fn byte_to_char(n: u8) -> &str {
+fn byte_to_char(n: u8) -> &'static str {
     let chars = [" ", ".", ":", "i", "o", "V", "M", "@"];
-    let n = (n >> 5) as uint;
+    let n = (n >> 5) as usize;
     assert!(n < chars.len());
     chars[n]
 }
@@ -12,7 +14,7 @@ fn print_char(font: &stb_tt::Font, c: char) {
     let (bitmap, w, h, _, _) = font.get_glyph(glyph_index);
     for j in range(0, h) {
         for i in range(0, w) {
-            print!("{}", byte_to_char(*bitmap.get((j * w + i) as uint)));
+            print!("{}", byte_to_char(bitmap[(j * w + i) as usize]));
         }
         print!("\n");
     }
