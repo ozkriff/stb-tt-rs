@@ -1,15 +1,15 @@
 // TODO: remove some warnings
-#![allow(unstable)]
 #![allow(dead_code)]
 #![allow(missing_copy_implementations)]
 #![allow(non_snake_case)]
 #![allow(improper_ctypes)]
+#![feature(io, libc, collections)]
 
 extern crate libc;
 
 use libc::{c_int, c_uchar};
-use std::io::fs::PathExtensions;
-use std::io::{Reader, File};
+use std::old_io::fs::PathExtensions;
+use std::old_io::{Reader, File};
 
 #[link(name = "stb_truetype")]
 extern { }
