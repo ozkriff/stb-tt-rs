@@ -3,7 +3,7 @@
 #![allow(missing_copy_implementations)]
 #![allow(non_snake_case)]
 #![allow(improper_ctypes)]
-#![feature(io, libc, collections)]
+#![feature(io, libc, collections, path)]
 
 extern crate libc;
 
