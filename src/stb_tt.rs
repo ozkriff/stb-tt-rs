@@ -1,19 +1,17 @@
-// TODO: remove some warnings
-#![allow(dead_code)]
-#![allow(missing_copy_implementations)]
-#![allow(non_snake_case)]
-#![allow(improper_ctypes)]
-#![feature(io, libc, collections, path)]
+
+#![feature(libc, collections, path_ext)]
 
 extern crate libc;
 
 use libc::{c_int, c_uchar};
-use std::old_io::fs::PathExtensions;
-use std::old_io::{Reader, File};
+use std::fs::{PathExt, File};
+use std::path::{Path};
+use std::io::{Read};
 
 #[link(name = "stb_truetype")]
-extern { }
+extern {}
 
+#[allow(dead_code, missing_copy_implementations, non_snake_case, improper_ctypes)]
 pub mod ffi {
     use libc::{c_int, c_uchar, c_float, c_void};
     use std::ptr;
@@ -144,12 +142,12 @@ pub mod ffi {
 
 pub struct Font {
     font_info: ffi::FontInfo,
-    data: Vec<c_uchar>,
-    height: f32,
     scale: f32,
-    ascent: i32,
-    descent: i32,
-    line_gap: i32,
+    _data: Vec<c_uchar>,
+    _height: f32,
+    _ascent: i32,
+    _descent: i32,
+    _line_gap: i32,
 }
 
 impl Font {
@@ -157,11 +155,13 @@ impl Font {
         if !font_path.exists() {
             panic!("Wrong font path: {}", font_path.display());
         }
-        Font::from_reader(&mut File::open(font_path), height)
+        let mut file = File::open(font_path).ok().expect("Can`t open font file");
+        Font::from_reader(&mut file, height)
     }
 
-    pub fn from_reader(reader: &mut Reader, height: f32) -> Font {
-        let data = reader.read_to_end().unwrap();
+    pub fn from_reader(reader: &mut Read, height: f32) -> Font {
+        let mut data = vec![];
+        reader.read_to_end(&mut data).ok().expect("Can not read from reader");
         let mut font_info = ffi::FontInfo::new();
         unsafe {
             let font_offset = ffi::stbtt_GetFontOffsetForIndex(&data[0] as *const u8, 0);
@@ -182,12 +182,12 @@ impl Font {
         let line_gap = (c_line_gap as f32 * scale) as i32;
         Font {
             font_info: font_info,
-            data: data,
-            height: height,
             scale: scale,
-            ascent: ascent,
-            descent: descent,
-            line_gap: line_gap,
+            _data: data,
+            _height: height,
+            _ascent: ascent,
+            _descent: descent,
+            _line_gap: line_gap,
         }
     }
 

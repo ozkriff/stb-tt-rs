@@ -1,6 +1,8 @@
-#![allow(unstable)]
+#![feature(core)]
 
 extern crate stb_tt;
+
+use std::path::{Path};
 
 fn byte_to_char(n: u8) -> &'static str {
     let chars = [" ", ".", ":", "i", "o", "V", "M", "@"];
