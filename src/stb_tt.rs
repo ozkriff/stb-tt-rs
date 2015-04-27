@@ -1,10 +1,8 @@
 
-#![feature(libc, collections, path_ext)]
-
 extern crate libc;
 
 use libc::{c_int, c_uchar};
-use std::fs::{PathExt, File};
+use std::fs::{File};
 use std::path::{Path};
 use std::io::{Read};
 
@@ -152,9 +150,6 @@ pub struct Font {
 
 impl Font {
     pub fn new(font_path: &Path, height: f32) -> Font {
-        if !font_path.exists() {
-            panic!("Wrong font path: {}", font_path.display());
-        }
         let mut file = File::open(font_path).ok().expect("Can`t open font file");
         Font::from_reader(&mut file, height)
     }
@@ -209,7 +204,7 @@ impl Font {
                 &mut xoff,
                 &mut yoff,
             );
-            Vec::from_raw_buf(buf, (w * h) as usize)
+            std::slice::from_raw_parts(buf, (w * h) as usize).to_vec()
         };
         (bitmap, w as i32, h as i32, xoff as i32, yoff as i32)
     }

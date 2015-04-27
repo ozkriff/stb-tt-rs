@@ -11,3 +11,6 @@ name = "stb_tt"
 
 [build-dependencies.gcc]
 git = "https://github.com/alexcrichton/gcc-rs"
+
+[dependencies]
+libc = "*"
