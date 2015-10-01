@@ -10,7 +10,7 @@ build = "./build.rs"
 name = "stb_tt"
 
 [build-dependencies.gcc]
-git = "https://github.com/alexcrichton/gcc-rs"
+gcc = "^0.3.17"
 
 [dependencies]
-libc = "*"
+libc = "^0.1.10"
