@@ -6,8 +6,10 @@ authors = ["ozkriff"]
 build = "./build.rs"
 
 [lib]
-
 name = "stb_tt"
+
+[[example]]
+name = "example"
 
 [build-dependencies.gcc]
 gcc = "^0.3.17"

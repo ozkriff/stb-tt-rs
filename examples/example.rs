@@ -1,5 +1,3 @@
-#![feature(core)]
-
 extern crate stb_tt;
 
 use std::path::{Path};
@@ -14,8 +12,8 @@ fn byte_to_char(n: u8) -> &'static str {
 fn print_char(font: &stb_tt::Font, c: char) {
     let glyph_index = font.find_glyph_index(c);
     let (bitmap, w, h, _, _) = font.get_glyph(glyph_index);
-    for j in range(0, h) {
-        for i in range(0, w) {
+    for j in 0 .. h {
+        for i in 0 .. w {
             print!("{}", byte_to_char(bitmap[(j * w + i) as usize]));
         }
         print!("\n");
