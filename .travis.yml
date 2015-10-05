@@ -1,6 +1,7 @@
 # See LICENSE file for copyright and license details.
 
 language: rust
+sudo: false
 
 script:
     - cargo build
