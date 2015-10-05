@@ -21,8 +21,8 @@ fn print_char(font: &stb_tt::Font, c: char) {
 }
 
 fn main() {
-    let font = stb_tt::Font::new(&Path::new("DroidSerif-Regular.ttf"), 30.0);
-    print_char(&font, '#');
+    let font = stb_tt::Font::new(&Path::new("assets/DroidSerif-Regular.ttf"), 30.0);
+    print_char(&font, '@');
 }
 
 // vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab:

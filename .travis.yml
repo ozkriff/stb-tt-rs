@@ -3,7 +3,11 @@
 language: rust
 sudo: false
 
+install:
+    - git clone --depth=1 https://github.com/ozkriff/zoc_assets assets
+
 script:
     - cargo build
+    - cargo run --example example
 
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab:
